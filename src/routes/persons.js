@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 
 
 router.post('/sign-up', passport.authenticate('local-signup',{
-    successRedirect: '/',
+    successRedirect: '/home',
     failureRedirect: '/per/login-fail',
     passReqToCallback: true
 }));

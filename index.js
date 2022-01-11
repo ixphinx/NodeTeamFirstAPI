@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
+const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
 
 //Inicializations
 const app = express();
@@ -13,6 +15,7 @@ require('./src/passport/local-auth.js');
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:true})); /*If html form is used */
+app.use(cookieParser('secret'));
 app.use(session({
     secret: 'secret',
     resave: false,
@@ -20,6 +23,7 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(morgan('dev'));
 
 
 //Database

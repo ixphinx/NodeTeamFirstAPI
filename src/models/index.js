@@ -24,7 +24,7 @@ const Data = new Schema({
 
 });
 
-Data.methods.encrypPassword = (password)=>{
+Data.methods.encryptPassword = (password)=>{
     return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 };
 

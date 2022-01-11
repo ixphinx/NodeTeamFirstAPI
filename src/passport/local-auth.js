@@ -2,6 +2,7 @@ const passport = require('passport');
 const PassportLocal = require('passport-local').Strategy;
 const Data = require('../models/index');
 
+
 passport.serializeUser((user, done)=>{
     done(null, user._id);
 });
@@ -12,14 +13,13 @@ passport.deserializeUser(async (id, done)=>{
 });
 
 passport.use('local-signup', new PassportLocal({
-    nicknameField: 'nickname',
+    usernameField: 'nickname',
     passwordField: 'password',
     passReqToCallback: true
-}, async (req, nickname, password, done)=>{
-    const user = new Data();
-    user.nickname = nickname;
-    user.password = password;
-    console.log(nickname + ' ' + password);
-    await user.save();
-    done(null, user);
+}, async (req, username, password, done)=>{
+    const newUser = new Data();
+    newUser.nickname = username;
+    newUser.password = newUser.encryptPassword(password);
+    await newUser.save();
+    done(null, newUser);
 }));
