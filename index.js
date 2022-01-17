@@ -5,6 +5,7 @@ const passport = require('passport');
 const session = require('express-session');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const flash = require('connect-flash');
 
 //Inicializations
 const app = express();
@@ -15,6 +16,7 @@ require('./src/passport/local-auth.js');
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:true})); /*If html form is used */
+app.use(flash());
 app.use(cookieParser('secret'));
 app.use(session({
     secret: 'secret',
@@ -33,6 +35,13 @@ mongoose.connect('mongodb+srv://admin:huevon33@database.aizqn.gcp.mongodb.net/jo
 
 
 //Routes
+app.use((req,res, next)=>{
+    app.locals.signinMessage = req.flash('signinMessage');
+    app.locals.signupMessage = req.flash('signupMessage');
+    app.locals.user = req.user;
+    console.log(app.locals);
+    next();
+});
 app.use('/', require('./src/routes/index.js')); /*Main route*/
 app.use('/per', require('./src/routes/persons.js')); /*All related Persons routes*/
 app.use('/bus', require('./src/routes/business.js')); /*All related Business routes */

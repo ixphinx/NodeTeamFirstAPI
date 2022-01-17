@@ -3,7 +3,7 @@ const router = express.Router();
 
 
 router.get('/home', (req, res) => {
-    res.send('You are in home');
+    res.send('You are in home ' + req.user.nickname);
 });
 
 
